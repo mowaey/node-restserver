@@ -1,35 +1,9 @@
-const mongoose = require('mongoose');
-const uniqueValidator = require('mongoose-unique-validator');
-
-let rolesValidos = {
-    values: ['ADMIN_ROLE', 'USER_ROLE'],
-    message: '{VALUE} is not a validate role'
-};
-
-let Schema = mongoose.Schema;
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema;
 
 let categoriaSchema = new Schema({
-    descripcion: {
-        type: String,
-        required: [true, 'The description is necessary']
-    },
-    usuario: {
-        type: String,
-        unique: true,
-        required: [true, 'The user is necessary']
-    }
-});
-
-categoriaSchema.methods.toJSON = function() {
-    let categoria = this;
-    let categoriaObject = categoria.toObject();
-    delete categoriaObject.password;
-
-    return categoriaObject;
-}
-
-categoriaSchema.plugin(uniqueValidator, {
-    message: '{PATH} must be unique'
+    descripcion: { type: String, unique: true, required: [true, 'La descripción es obligatoria'] },
+    usuario: { type: Schema.Types.ObjectId, ref: 'Usuario' }
 });
 
 module.exports = mongoose.model('Categoria', categoriaSchema);

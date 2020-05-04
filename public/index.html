@@ -3,19 +3,30 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Google Sign-In</title>
+    <title>Google Sign-In Demo</title>
 
     <script src="https://apis.google.com/js/platform.js" async defer></script>
-    <meta name="google-signin-client_id" content="965938443250-6vu6bo8v59f8c2g5tpjl1fjfdj1ci17n.apps.googleusercontent.com">
+    <meta name="google-signin-client_id" content="219758474264-vh1bibcphgvbc32km508lubtqkanikf1.apps.googleusercontent.com">
+
 </head>
 
 <body>
-    <div class="g-signin2" data-onsuccess="onSignIn"></div>
-    <a href="#" onclick="signOut();">Sign out</a>
 
+    <!-- <img src="http://localhost:3000/imagen/usuarios/5aa69ce1dc2afa0875c84d02-28.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjp7InJvbGUiOiJBRE1JTl9ST0xFIiwiZXN0YWRvIjpmYWxzZSwiZ29vZ2xlIjp0cnVlLCJfaWQiOiI1YWE2OWNlMWRjMmFmYTA4NzVjODRkMDIiLCJub21icmUiOiJNZWxpc3NhIEZsb3JlcyIsImVtYWlsIjoidGVzdDFAZ21haWwuY29tIiwiX192IjowfSwiaWF0IjoxNTIxNDcwOTE1LCJleHAiOjE1MjE2NDM3MTV9.H26MDoLrbuYiOVQPSmjwOqur5Dkv72YOJVMukJdiSMU" alt=""> -->
+
+    <div class="g-signin2" data-onsuccess="onSignIn"></div>
+
+    <a href="#" onclick="signOut();">Sign out</a>
     <script>
+        function signOut() {
+            var auth2 = gapi.auth2.getAuthInstance();
+            auth2.signOut().then(function() {
+                console.log('User signed out.');
+            });
+        }
+
         function onSignIn(googleUser) {
             var profile = googleUser.getBasicProfile();
             console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
@@ -23,7 +34,10 @@
             console.log('Image URL: ' + profile.getImageUrl());
             console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
 
+
             var id_token = googleUser.getAuthResponse().id_token;
+
+            console.log(id_token);
 
 
             var xhr = new XMLHttpRequest();
@@ -33,15 +47,10 @@
                 console.log('Signed in as: ' + xhr.responseText);
             };
             xhr.send('idtoken=' + id_token);
-        }
 
-        function signOut() {
-            var auth2 = gapi.auth2.getAuthInstance();
-            auth2.signOut().then(function() {
-                console.log('User signed out.');
-            });
         }
     </script>
+
 </body>
 
 </html>
